@@ -42,6 +42,12 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
             detail="User not found",
         )
 
+    print("PASSWORD:", payload.password)
+    print("PASSWORD LENGTH:", len(payload.password))
+
+    print("HASH:", user.password_hash)
+    print("HASH LENGTH:", len(user.password_hash))
+
     if not verify_password(payload.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
