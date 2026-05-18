@@ -99,8 +99,8 @@ async def get_me(current_user: User = Depends(get_current_user)):
 
 @router.get("/generate-hash")
 async def generate_hash():
-    from app.core.security import get_password_hash
+    from app.core.security import hash_password
 
     return {
-        "hash": get_password_hash("admin123")
+        "hash": hash_password("admin123")
     }
