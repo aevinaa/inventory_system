@@ -110,3 +110,11 @@ async def refresh_token(
 @router.get("/me", response_model=UserOut)
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.get("/real-hash")
+async def real_hash():
+    from app.core.security import hash_password
+
+    return {
+        "hash": hash_password("changeme123")
+    }
