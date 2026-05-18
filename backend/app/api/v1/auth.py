@@ -42,12 +42,6 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
             detail="User not found",
         )
 
-    print("PASSWORD:", payload.password)
-    print("PASSWORD LENGTH:", len(payload.password))
-
-    print("HASH:", user.password_hash)
-    print("HASH LENGTH:", len(user.password_hash))
-
     if not verify_password(payload.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -111,10 +105,3 @@ async def refresh_token(
 async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.get("/real-hash")
-async def real_hash():
-    from app.core.security import hash_password
-
-    return {
-        "hash": hash_password("changeme123")
-    }
