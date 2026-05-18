@@ -52,3 +52,7 @@ app.include_router(api_router, prefix="/api/v1")
 async def health_check():
     """Quick check to verify server is running."""
     return {"status": "ok", "environment": settings.ENVIRONMENT}
+
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    return {"message": "OK"}
