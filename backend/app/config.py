@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings
-from pydantic import validator
 from typing import List
 
 
@@ -16,19 +15,11 @@ class Settings(BaseSettings):
 
     ALLOWED_ORIGINS: List[str] = ["http://localhost:5173"]
 
-    @validator("ALLOWED_ORIGINS", pre=True)
-    def parse_origins(cls, v):
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v
-
     CLOUDINARY_CLOUD_NAME: str = ""
     CLOUDINARY_API_KEY: str = ""
     CLOUDINARY_API_SECRET: str = ""
 
-    model_config = {
-        "env_file": ".env"
-    }
+    model_config = {"env_file": ".env"}
 
 
 settings = Settings()
