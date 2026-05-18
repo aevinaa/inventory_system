@@ -66,6 +66,7 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
     return {
         "access_token": "testtoken",
         "refresh_token": "testrefresh",
+        "token_type": "bearer"
     }
 
 
