@@ -29,7 +29,10 @@ async def create_supplier(
     current_user=Depends(get_current_user),
 ):
     data.shop_id = shop_id
-    supplier = Supplier(**data.model_dump())
+    print(data.model_dump())
+    supplier = Supplier(
+        **data.model_dump(),
+        shop_id=data.shop_id)
     db.add(supplier)
     await db.commit()
     await db.refresh(supplier)
