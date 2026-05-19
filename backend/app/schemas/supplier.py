@@ -9,6 +9,7 @@ class SupplierCreate(BaseModel):
     email: str | None = None
     address: str | None = None
     notes: str | None = None
+    shop_id: str | None = None
 
 
 class SupplierUpdate(BaseModel):
