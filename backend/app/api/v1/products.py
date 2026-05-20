@@ -1,16 +1,27 @@
 from fastapi import APIRouter, Depends, Query, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.dependencies import get_db, get_current_user, require_admin
+
+from app.dependencies import (
+    get_db,
+    get_current_user,
+    require_admin,
+)
+
 from app.services.product_service import ProductService
+
 from app.schemas.product import (
-    ProductCreate, ProductUpdate, ProductOut,
-    ProductListOut, PaginatedProducts
+    ProductCreate,
+    ProductUpdate,
+    ProductOut,
+    PaginatedProducts,
 )
 
 router = APIRouter()
 
 
-def get_service(db: AsyncSession = Depends(get_db)) -> ProductService:
+def get_service(
+    db: AsyncSession = Depends(get_db),
+) -> ProductService:
     return ProductService(db)
 
 
@@ -40,31 +51,42 @@ async def list_products(
 @router.post("", response_model=ProductOut)
 async def create_product(
     data: ProductCreate,
-    shop_id: str,
+    shop_id: str | None = None,
     service: ProductService = Depends(get_service),
     current_user=Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
     """Create a new product. SKU is auto-generated."""
-    data.shop_id = shop_id
+
+    product_data = data.model_dump()
+    product_data["shop_id"] = shop_id
+
     # Get category name for SKU prefix generation
     category_name = None
-    if data.category_id:
+
+    if product_data.get("category_id"):
         from sqlalchemy import select
         from app.models.category import Category
+
         result = await db.execute(
-            select(Category).where(Category.id == data.category_id)
+            select(Category).where(
+                Category.id == product_data["category_id"]
+            )
         )
+
         cat = result.scalar_one_or_none()
+
         if cat:
             category_name = cat.name
 
     product = await service.create_product(
-        data=data,
+        data=ProductCreate(**product_data),
         created_by=current_user.id,
         category_name=category_name,
     )
+
     await db.commit()
+
     return await service.get_product(product.id)
 
 
@@ -79,6 +101,7 @@ async def get_by_barcode(
     Called automatically when barcode is scanned.
     Returns full product details including image.
     """
+
     return await service.get_by_barcode(barcode)
 
 
@@ -99,8 +122,13 @@ async def update_product(
     current_user=Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
-    product = await service.update_product(product_id, data)
+    product = await service.update_product(
+        product_id,
+        data,
+    )
+
     await db.commit()
+
     return await service.get_product(product.id)
 
 
@@ -113,8 +141,14 @@ async def upload_image(
     db: AsyncSession = Depends(get_db),
 ):
     """Upload or replace product image. Stores in Cloudinary."""
-    product = await service.upload_image(product_id, file)
+
+    product = await service.upload_image(
+        product_id,
+        file,
+    )
+
     await db.commit()
+
     return await service.get_product(product.id)
 
 
@@ -126,6 +160,10 @@ async def delete_product(
     db: AsyncSession = Depends(get_db),
 ):
     """Soft delete — marks product inactive. Admin only."""
+
     await service.delete_product(product_id)
+
     await db.commit()
-    return {"message": "Product deleted successfully"}
+    return {
+        "message": "Product deleted successfully"
+    }
