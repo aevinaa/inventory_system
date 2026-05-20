@@ -28,14 +28,14 @@ async def create_supplier(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    data.shop_id = shop_id
-    print(data.model_dump())
-    supplier = Supplier(**data.model_dump())
+    supplier_data = data.model_dump()
+    supplier_data["shop_id"] = shop_id
+    print(supplier_data)
+    supplier = Supplier(**supplier_data)
     db.add(supplier)
     await db.commit()
     await db.refresh(supplier)
     return supplier
-
 
 @router.get("/{supplier_id}", response_model=SupplierOut)
 async def get_supplier(
