@@ -35,16 +35,27 @@ const Suppliers = () => {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data) => (await apiClient.post('/suppliers', {
-      ...data,
-      shop_id: currentShop?.id,
-    })).data,
+    mutationFn: async (data) =>
+      (
+        await apiClient.post(
+          `/suppliers?shop_id=${currentShop?.id}`,
+          data
+        )
+      ).data,
     onSuccess: () => {
       toast.success('Supplier created successfully');
-      queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+
+      queryClient.invalidateQueries({
+        queryKey: ['suppliers'],
+      });
+
       closeModal();
     },
-    onError: (error) => toast.error(error.response?.data?.detail || 'Failed to create supplier'),
+    onError: (error) =>
+      toast.error(
+        error.response?.data?.detail ||
+        'Failed to create supplier'
+      ),
   });
 
   const updateMutation = useMutation({
