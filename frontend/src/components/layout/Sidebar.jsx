@@ -28,7 +28,7 @@ const Sidebar = () => {
     <aside className="hidden md:flex flex-col w-64 bg-[#1a3c5e] text-white shadow-xl">
       <div className="p-6 flex items-center justify-center border-b border-white/10">
         <h1 className="text-2xl font-bold tracking-wider text-[#c9922a]">
-          Jewel Inventory
+          Tirupati Inventory System
         </h1>
       </div>
       <nav className="flex-1 py-6 px-4 space-y-2">
