@@ -53,7 +53,7 @@ const Sidebar = () => {
         })}
       </nav>
       <div className="p-4 border-t border-white/10 text-xs text-center text-gray-400">
-        &copy; {new Date().getFullYear()} Jewel Inventory
+        &copy; {new Date().getFullYear()} Tirupati Inventory System
       </div>
     </aside>
   );
