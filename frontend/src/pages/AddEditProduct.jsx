@@ -310,7 +310,12 @@ const AddEditProduct = () => {
               <label style={labelStyle}>Unit</label>
               <select
                 value={formData.unit}
-                onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    unit: e.target.value
+                  })
+                }
                 style={inputStyle}
                 onFocus={e => e.target.style.borderColor = '#1a3c5e'}
                 onBlur={e => e.target.style.borderColor = '#e5e7eb'}
@@ -318,6 +323,7 @@ const AddEditProduct = () => {
                 <option value="piece">Piece</option>
                 <option value="gram">Gram</option>
                 <option value="kg">Kilogram</option>
+                <option value="carat">Carat</option>
                 <option value="meter">Meter</option>
                 <option value="set">Set</option>
                 <option value="pair">Pair</option>
@@ -328,12 +334,23 @@ const AddEditProduct = () => {
             {/* Low Stock Threshold */}
             <div>
               <label style={labelStyle}>Low Stock Alert Threshold</label>
+
               <input
                 type="number"
                 min="0"
                 value={formData.low_stock_threshold}
-                onChange={(e) => setFormData({ ...formData, low_stock_threshold: e.target.value })}
+
+                onWheel={(e) => e.target.blur()}
+
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    low_stock_threshold: e.target.value
+                  })
+                }
+
                 style={inputStyle}
+
                 onFocus={e => e.target.style.borderColor = '#1a3c5e'}
                 onBlur={e => e.target.style.borderColor = '#e5e7eb'}
               />
@@ -341,14 +358,25 @@ const AddEditProduct = () => {
 
             {/* Initial Quantity */}
             {!isEditMode && (
-              <div>
+            <div>
                 <label style={labelStyle}>Initial Quantity</label>
+
                 <input
                   type="number"
                   min="0"
                   value={formData.quantity}
-                  onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+
+                  onWheel={(e) => e.target.blur()}
+
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      quantity: e.target.value
+                    })
+                  }
+
                   style={inputStyle}
+
                   onFocus={e => e.target.style.borderColor = '#1a3c5e'}
                   onBlur={e => e.target.style.borderColor = '#e5e7eb'}
                 />
