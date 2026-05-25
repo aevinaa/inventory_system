@@ -31,6 +31,7 @@ const Products = () => {
       limit: 50,
       search: debouncedSearch || undefined,
       category_id: categoryId || undefined,
+      supplier_id: supplierId || undefined,
       low_stock_only: lowStockOnly || undefined,
       shop_id: currentShop?.id,
     }),
