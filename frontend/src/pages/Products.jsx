@@ -131,6 +131,32 @@ const Products = () => {
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
             </select>
+
+            <select
+              value={supplierId}
+              onChange={(e) => {
+                setSupplierId(e.target.value);
+                setPage(1);
+              }}
+
+              style={{
+                padding: '9px 12px',
+                border: '1.5px solid #e5e7eb',
+                borderRadius: 8,
+                fontSize: 14,
+                outline: 'none',
+                background: 'white',
+                minWidth: 160,
+              }}
+            >
+              <option value="">All Suppliers</option>
+
+              {suppliers.map(s => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
               <input
                 type="checkbox"
