@@ -25,7 +25,7 @@ const Products = () => {
   const debouncedSearch = useDebounce(search, 300);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['products', currentShop?.id, page, debouncedSearch, categoryId, lowStockOnly],
+    queryKey: ['products', currentShop?.id, page, debouncedSearch, categoryId, supplierId, lowStockOnly],
     queryFn: () => getProducts({
       page,
       limit: 50,
